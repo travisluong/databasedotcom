@@ -127,7 +127,7 @@ module Databasedotcom
         end
       end
 
-      self.version = "22.0" unless self.version
+      self.version = "29.0" unless self.version
 
       self.oauth_token
     end
@@ -202,6 +202,11 @@ module Databasedotcom
     #    client.query("SELECT Name FROM Account") #=> [#<Account @Id=nil, @Name="Foo", ...>, #<Account @Id=nil, @Name="Bar", ...> ...]
     def query(soql_expr)
       result = http_get("/services/data/v#{self.version}/query", :q => soql_expr)
+      collection_from(result.body)
+    end
+
+    def query_all(soql_expr)
+      result = http_get("/services/data/v#{self.version}/queryAll", :q => soql_expr)
       collection_from(result.body)
     end
 
